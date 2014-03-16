@@ -165,7 +165,7 @@ public class VarastoTest {
     public void testOtaVarastostaNegatiivinenMaara() {
         varasto.lisaaVarastoon(5.0);
         double otettu = varasto.otaVarastosta(-5.0);
-        assertTrue(otettu == 0.0);
+        assertTrue(otettu == 0.5);
     }
 
     /**
