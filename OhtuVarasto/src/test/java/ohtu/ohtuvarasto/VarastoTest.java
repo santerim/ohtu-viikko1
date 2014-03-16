@@ -15,9 +15,21 @@ public class VarastoTest {
     Varasto varasto;
     double vertailuTarkkuus = 0.0001;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
     @Before
     public void setUp() {
-        varasto = new Varasto(10);
+        varasto = new Varasto(10, 0);
+    }
+
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
@@ -74,5 +86,93 @@ public class VarastoTest {
         varasto = new Varasto(-1,2);
         varasto = new Varasto(-1,-1);
         varasto.toString();
+    }
+
+    /**
+     * Test of getSaldo method, of class Varasto.
+     */
+    @Test
+    public void testGetSaldo() {
+        varasto.lisaaVarastoon(1.0);
+        assertTrue(varasto.getSaldo() == 1.0);
+    }
+
+    /**
+     * Test of getTilavuus method, of class Varasto.
+     */
+    @Test
+    public void testGetTilavuus() {
+        assertTrue(varasto.getTilavuus() == 10);
+    }
+
+    /**
+     * Test of paljonkoMahtuu method, of class Varasto.
+     */
+    @Test
+    public void testPaljonkoMahtuu() {
+        varasto.lisaaVarastoon(5.0);
+        assertTrue(varasto.paljonkoMahtuu() == 5.0);
+    }
+
+    /**
+     * Test of lisaaVarastoon method, of class Varasto.
+     */
+    @Test
+    public void testLisaaVarastoon() {
+        assertTrue(varasto.paljonkoMahtuu() == 10.0);
+        varasto.lisaaVarastoon(5.0);
+        assertTrue(varasto.paljonkoMahtuu() == 5.0);
+    }
+    
+    @Test
+    public void testLisaaVarastoonNegatiivinenLuku() {
+        varasto.lisaaVarastoon(-5.0);
+        assertTrue(varasto.paljonkoMahtuu() == 10.0);
+    }
+    
+    @Test
+    public void testLisaaVarastoonNiinPaljonKuinMahtuu() {
+        varasto.lisaaVarastoon(varasto.paljonkoMahtuu());
+        assertTrue(varasto.paljonkoMahtuu() == 0.0);
+    }
+    
+    @Test
+    public void testLisaaVarastoonEnemmanKuinMahtuu() {
+        varasto.lisaaVarastoon(11.0);
+        assertTrue(varasto.paljonkoMahtuu() == 0.0);
+        assertTrue(varasto.getSaldo() == 10.0);
+    }
+
+    /**
+     * Test of otaVarastosta method, of class Varasto.
+     */
+    @Test
+    public void testOtaVarastosta() {
+        varasto.lisaaVarastoon(5.0);
+        assertTrue(varasto.paljonkoMahtuu() == 5.0);
+        varasto.otaVarastosta(5.0);
+        assertTrue(varasto.paljonkoMahtuu() == 10.0);
+    }
+    
+    @Test
+    public void testOtaVarastostaEnemmanKuinSiellaOn() {
+        varasto.lisaaVarastoon(5.0);
+        varasto.otaVarastosta(6.0);
+        assertTrue(varasto.getSaldo() == 0.0);
+    }
+    
+    @Test
+    public void testOtaVarastostaNegatiivinenMaara() {
+        varasto.lisaaVarastoon(5.0);
+        double otettu = varasto.otaVarastosta(-5.0);
+        assertTrue(otettu == 0.0);
+    }
+
+    /**
+     * Test of toString method, of class Varasto.
+     */
+    @Test
+    public void testToString() {
+        assertEquals("saldo = 0.0, vielä tilaa 10.0", varasto.toString());
     }
 }
